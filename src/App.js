@@ -160,7 +160,7 @@ function App() {
         </button>
         {jokeByKw !== "" ? <Joke
           value={jokeByKw.value}
-          categories={error ? undefined : jokeByKw.categories[0]}
+          categories={jokeByKw.categories[0]}
         /> : null}
       </div>
       <div className="footer">
