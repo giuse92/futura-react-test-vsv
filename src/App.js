@@ -46,7 +46,7 @@ const Joke = ({ value, categories }) => {
 
   return (
     <div className="Joke">
-      <code className="Joke-Value">{value !== undefined && value}</code>
+      <code className="Joke-Value">{value}</code>
       <span className="Selected-Cat" style={categories === undefined ? {display: "none"} : null}>
         <code>{categories}</code>
       </span>
@@ -102,10 +102,8 @@ function App() {
       launchErrorAlert();
       console.error(err);
       setError(true);
-      setJokeByKw(err)
     } finally {
-      setIsLoaded(true)
-      setError(true)
+      setIsLoaded(true);
     }
   };
 
@@ -161,7 +159,7 @@ function App() {
           <h2>GET RANDOM JOKE FOR SELECTED CATEGORY</h2>
         </button>
         {jokeByKw !== "" ? <Joke
-          value={error ? jokeByKw.message : jokeByKw.value}
+          value={jokeByKw.value}
           categories={error ? undefined : jokeByKw.categories[0]}
         /> : null}
       </div>
