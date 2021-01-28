@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -19,15 +19,26 @@ const Logo = ({ loading }) => {
 }
 
 const CategoryButton = ({ title, onClick }) => {
-  return null
-  // <button className="Cat-button" ... >
-  //   <code>{title}</code>
-  // </button>
+  return (
+   <button className="Cat-button">
+     <code>{title}</code>
+   </button>
+  )
 }
 
 
 const CategoriesList = ({ categories, onCategoryClick }) => {
-  return null
+  return (
+    <>
+      {categories.map((category, i) => {
+        return (
+          <div key={`category-n-${i}`}>
+            <CategoryButton title={category} onClick={onCategoryClick} />
+          </div>
+        )
+      })}
+    </>
+  )
   // per ciascun elemento di 'categories' renderizzare il componente <CategoryButton />
 }
 
@@ -50,10 +61,30 @@ function App() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(true);
   const [jokeByKw, setJokeByKw] = useState("");
+  const [errorCategories, setErrorCategories] = useState(null);
+  const [isLoadedCategories, setIsLoadedCategories] = useState(false);
+  const [categories, setCategories] = useState([]);
 
 
   // getAllCategories
   // funzione che deve recuperare l'array di tutte le categorie esistenti e salvarlo
+  useEffect(() => {
+    const getAllCategories = async () => {
+      try {
+        const response = await fetch(ALLCATEGORIESURL);
+        const result = await response.json();
+        setCategories(result);
+        //if (result && result.result.length === 0) throw new Error(result);
+      } catch (err) {
+        setErrorCategories(true);
+        console.error(err);
+      } finally {
+        setIsLoadedCategories(true);
+      }
+    };
+
+    getAllCategories();
+  }, [])
 
   // onCategoryClick
   // funzione richiamata al click del componente CategoryButton
@@ -71,9 +102,9 @@ function App() {
       launchErrorAlert();
       console.error(err);
       setError(true);
+      setJokeByKw(err)
     } finally {
       setIsLoaded(true)
-      setError(false);
     }
   };
 
@@ -105,7 +136,7 @@ function App() {
         </button>
         <code>or: </code>
         <CategoriesList
-        // ...
+          categories={categories}
         />
       </div>
       <div className="Content">
@@ -129,8 +160,8 @@ function App() {
           <h2>GET RANDOM JOKE FOR SELECTED CATEGORY</h2>
         </button>
         {jokeByKw !== "" ? <Joke
-          value={jokeByKw.value}
-          categories={jokeByKw.categories[0]}
+          value={error ? jokeByKw.message : jokeByKw.value}
+          categories={error ? undefined : jokeByKw.categories[0]}
         /> : null}
       </div>
       <div className="footer">
