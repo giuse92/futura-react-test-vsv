@@ -46,7 +46,7 @@ const Joke = ({ value, categories }) => {
 
   return (
     <div className="Joke">
-      <code className="Joke-Value">{value}</code>
+      <code className="Joke-Value">{value !== undefined && value}</code>
       <span className="Selected-Cat" style={categories === undefined ? {display: "none"} : null}>
         <code>{categories}</code>
       </span>
@@ -105,6 +105,7 @@ function App() {
       setJokeByKw(err)
     } finally {
       setIsLoaded(true)
+      setError(true)
     }
   };
 
