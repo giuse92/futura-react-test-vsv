@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
@@ -65,11 +65,15 @@ function App() {
       setIsLoaded(false);
       const response = await fetch(ALLLJOKESBYKEYWORD + searchValue);
       const result = await response.json();
+      if (result && result.status) throw new Error(result.error)
       setJokeByKw(result.result[0]);
     } catch (err) {
+      launchErrorAlert();
+      console.error(err);
       setError(true);
     } finally {
       setIsLoaded(true)
+      setError(false);
     }
   };
 
