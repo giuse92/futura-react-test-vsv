@@ -47,7 +47,7 @@ const Joke = ({ value, categories }) => {
   return (
     <div className="Joke">
       <code className="Joke-Value">{value}</code>
-      <span className="Selected-Cat" style={categories === undefined ? {display: "none"} : null}>
+      <span className="Selected-Cat" style={categories === undefined && {display: "none"}}>
         <code>{categories}</code>
       </span>
     </div>
@@ -74,7 +74,6 @@ function App() {
         const response = await fetch(ALLCATEGORIESURL);
         const result = await response.json();
         setCategories(result);
-        //if (result && result.result.length === 0) throw new Error(result);
       } catch (err) {
         setErrorCategories(true);
         console.error(err);
@@ -96,8 +95,14 @@ function App() {
       setIsLoaded(false);
       const response = await fetch(ALLLJOKESBYKEYWORD + searchValue);
       const result = await response.json();
-      if (result && result.status) throw new Error(result.error);
-      if (result && result.result.length === 0) throw new Error(result.error);
+      if (result && result.status) {
+        setJokeByKw(result.message); 
+        throw new Error(result.error);
+      };
+      if (result && result.result.length === 0) {
+        setJokeByKw("Quote not found");
+        throw new Error("Quote not found")
+      };
       setJokeByKw(result.result[0]);
     } catch (err) {
       launchErrorAlert();
@@ -160,8 +165,8 @@ function App() {
           <h2>GET RANDOM JOKE FOR SELECTED CATEGORY</h2>
         </button>
         {jokeByKw !== "" ? <Joke
-          value={jokeByKw.value}
-          categories={jokeByKw.categories[0]}
+          value={jokeByKw.value === undefined ? jokeByKw : jokeByKw.value}
+          categories={jokeByKw.categories !== undefined ? jokeByKw.categories[0] : undefined}
         /> : null}
       </div>
       <div className="footer">
