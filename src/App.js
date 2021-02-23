@@ -95,13 +95,14 @@ function App() {
   // getRandomJokeByCat
   // funzione che recupera una singola barzelletta e la salva
   const getRandomJokeByCat = async () => {
+    setSearchValue("");
     try {
       const response = await fetch(`${RANDOMJOKEBYCATURL+selectedTagState}`)
       const result = await response.json();
       setJokeByKw(result);
     } catch (error) {
       console.log(error);
-    } 
+    }
   }
 
   //funzione per richiamare joke tramite parola chiave
@@ -111,7 +112,7 @@ function App() {
       const response = await fetch(ALLLJOKESBYKEYWORD + searchValue);
       const result = await response.json();
       if (result && result.status) {
-        setJokeByKw(result.message); 
+        setJokeByKw(result.message);
         throw new Error(result.error);
       };
       if (result && result.result.length === 0) {
@@ -143,6 +144,7 @@ function App() {
           loading={isLoaded}
         />
         <input
+          value={searchValue}
           type="search"
           id="search" name="search"
           placeholder="Enter keyword here"
@@ -175,6 +177,7 @@ function App() {
           </h2>
         </code>
         <button
+          disabled={selectedTagState === ""}
           className="Random-Button"
           onClick={getRandomJokeByCat}
         >
