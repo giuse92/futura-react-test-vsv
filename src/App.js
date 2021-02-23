@@ -96,7 +96,8 @@ function App() {
       setIsLoaded(false);
       const response = await fetch(ALLLJOKESBYKEYWORD + searchValue);
       const result = await response.json();
-      if (result && result.status) throw new Error(result.error)
+      if (result && result.status) throw new Error(result.error);
+      if (result && result.result.length === 0) throw new Error(result.error);
       setJokeByKw(result.result[0]);
     } catch (err) {
       launchErrorAlert();
