@@ -20,7 +20,7 @@ const Logo = ({ loading }) => {
 
 const CategoryButton = ({ title, onClick }) => {
   return (
-   <button className="Cat-button">
+   <button className="Cat-button" onClick={onClick}>
      <code>{title}</code>
    </button>
   )
@@ -64,6 +64,7 @@ function App() {
   const [errorCategories, setErrorCategories] = useState(false);
   const [isLoadedCategories, setIsLoadedCategories] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [selectedTagState, setSelectedTagState] = useState("");
 
 
   // getAllCategories
@@ -87,6 +88,9 @@ function App() {
 
   // onCategoryClick
   // funzione richiamata al click del componente CategoryButton
+  const onCategoryClick = (e) => {
+    setSelectedTagState(e.target.textContent);
+  }
 
   // getRandomJokeByCat
   // funzione che recupera una singola barzelletta e la salva
@@ -142,6 +146,7 @@ function App() {
         <code>or: </code>
         <CategoriesList
           categories={categories}
+          onCategoryClick={onCategoryClick}
         />
       </div>
       <div className="Content">
@@ -154,7 +159,7 @@ function App() {
           <h2>
             SELECTED CATEGORY:
               <span className="Selected-Cat">
-
+              {selectedTagState === "" ? "None" : selectedTagState}
             </span>
           </h2>
         </code>
