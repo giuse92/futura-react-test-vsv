@@ -47,7 +47,7 @@ const Joke = ({ value, categories }) => {
   return (
     <div className="Joke">
       <code className="Joke-Value">{value}</code>
-      <span className="Selected-Cat" style={categories === undefined && {display: "none"}}>
+      <span className="Selected-Cat" style={categories === undefined ? {display: "none"} : null}>
         <code>{categories}</code>
       </span>
     </div>
@@ -58,10 +58,10 @@ const Joke = ({ value, categories }) => {
 function App() {
   // qui tutto ciò che serve al componente per essere inizializzato
   const [searchValue, setSearchValue] = useState("");
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(false);
   const [isLoaded, setIsLoaded] = useState(true);
   const [jokeByKw, setJokeByKw] = useState("");
-  const [errorCategories, setErrorCategories] = useState(null);
+  const [errorCategories, setErrorCategories] = useState(false);
   const [isLoadedCategories, setIsLoadedCategories] = useState(false);
   const [categories, setCategories] = useState([]);
 
@@ -166,7 +166,7 @@ function App() {
         </button>
         {jokeByKw !== "" ? <Joke
           value={jokeByKw.value === undefined ? jokeByKw : jokeByKw.value}
-          categories={jokeByKw.categories !== undefined ? jokeByKw.categories[0] : undefined}
+          categories={jokeByKw.categories !== undefined && jokeByKw.categories[0]}
         /> : null}
       </div>
       <div className="footer">
