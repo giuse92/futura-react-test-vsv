@@ -90,6 +90,7 @@ function App() {
   // funzione richiamata al click del componente CategoryButton
   const onCategoryClick = (e) => {
     setSelectedTagState(e.target.textContent);
+    setJokeByKw("");
   }
 
   // getRandomJokeByCat
