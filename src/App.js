@@ -94,6 +94,17 @@ function App() {
 
   // getRandomJokeByCat
   // funzione che recupera una singola barzelletta e la salva
+  const getRandomJokeByCat = async () => {
+    try {
+      const response = await fetch(`${RANDOMJOKEBYCATURL+selectedTagState}`)
+      const result = await response.json();
+      setJokeByKw(result);
+    } catch (error) {
+      console.log(error);
+    } 
+  }
+
+  //funzione per richiamare joke tramite parola chiave
   const getJokeByKeyword = async () => {
     try {
       setIsLoaded(false);
@@ -165,7 +176,7 @@ function App() {
         </code>
         <button
           className="Random-Button"
-
+          onClick={getRandomJokeByCat}
         >
           <h2>GET RANDOM JOKE FOR SELECTED CATEGORY</h2>
         </button>
